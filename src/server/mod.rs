@@ -1,12 +1,10 @@
-use std::error::Error;
 use crate::server::cache::MyCacheService;
-use tonic::transport::Server as tserver;
-use std::sync::Arc;
 use interplex_ai_schemas_community_neoeinstein_tonic::schema::v1::tonic::cache_service_server::CacheServiceServer;
+use log::info;
+use std::error::Error;
+use tonic::transport::Server as tserver;
 
 mod cache;
-
-use tonic_reflection::server::{ServerReflection, ServerReflectionServer};
 
 #[derive(Default)]
 pub struct ServerFactory {
@@ -18,9 +16,9 @@ impl ServerFactory {
         self
     }
     pub fn build(&self) -> Server {
-        return Server {
+        Server {
             server_config: self.server_configuration,
-        };
+        }
     }
 }
 #[derive(Default, Copy, Clone)]
@@ -32,16 +30,15 @@ pub struct Server {
 }
 
 impl Server {
-    pub async fn start(&self) -> Result<(), Box<dyn Error>>{
-            let port = self.server_config.port.to_string();
-            let addr = format!("0.0.0.0:{}", port).parse().unwrap();
-        env_logger::init();
-            println!("Server listening on port {}", port);
-            let my_cache_service = MyCacheService::default();
-            Ok(tserver::builder()
-                .add_service(CacheServiceServer::new(my_cache_service))
-                .serve(addr)
-                .await?)
+    pub async fn start(&self) -> Result<(), Box<dyn Error>> {
+        let port = self.server_config.port.to_string();
+        let addr = format!("0.0.0.0:{}", port).parse().unwrap();
+        info!("Server listening on port {}", port);
+        let my_cache_service = MyCacheService;
+        Ok(tserver::builder()
+            .add_service(CacheServiceServer::new(my_cache_service))
+            .serve(addr)
+            .await?)
     }
 }
 
