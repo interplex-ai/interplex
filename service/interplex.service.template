@@ -1,0 +1,15 @@
+[Unit]
+Description=Interplex Cache
+After=network.target
+
+[Service]
+Type=simple
+User=__USERNAME__
+ExecStart=/usr/local/bin/interplex
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
+```A simple cache written in Rust
+
