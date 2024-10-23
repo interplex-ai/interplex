@@ -6,7 +6,7 @@ SYSTEMD_DIR = /etc/systemd/system
 SERVICE_TEMPLATE = service/interplex.service
 SERVICE_FILE = interplex.template
 PACKAGE_NAME = interplex
-VERSION = 1.0
+VERSION = 0.0.1 # x-release-please-version
 MAKEFLAGS += --debug=v
 
 all: release docker
