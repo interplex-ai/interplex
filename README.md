@@ -1,6 +1,6 @@
 # Interplex
 
-A simple cache written in Rust.
+A high performance cache written in Rust using grpc.
 
 ## Test
 
