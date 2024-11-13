@@ -84,7 +84,7 @@ impl Cacheable for DiskCache {
         let contents = serde_json::to_string(&cached_object)?;
         write(&file_path, contents)?;
 
-        info!("Cached value for key: {}", key);
+        info!("Cached value for key: {} at {}", key, file_path.as_path().to_str().unwrap());
         Ok(())
     }
 }

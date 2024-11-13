@@ -4,7 +4,6 @@ After=network.target
 
 [Service]
 Type=simple
-User=nobody
 ExecStart=/usr/local/bin/interplex
 Restart=always
 RestartSec=1
