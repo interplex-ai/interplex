@@ -26,13 +26,13 @@ docker:
 push:
 	docker push $(DOCKER_IMAGE)
 
-install: release
+install:
 	echo "Install into $(TARGET_DIR)/$(BINARY_NAME)..."
 	cp target/release/$(BINARY_NAME) $(TARGET_DIR)/$(BINARY_NAME)
-	sed "s/__USERNAME__/$(USER)/" $(SERVICE_TEMPLATE) > $(SYSTEMD_DIR)/$(SERVICE_FILE)
+	cp $(SERVICE_TEMPLATE) $(SYSTEMD_DIR)/$(SERVICE_FILE)
 	systemctl daemon-reload
-	systemctl enable $(SERVICE_FILE)
-	systemctl start $(SERVICE_FILE)
+	systemctl enable $(PACKAGE_NAME)
+	systemctl start $(PACKAGE_NAME)
 
 uninstall:
 	rm $(TARGET_DIR)/$(BINARY_NAME)
