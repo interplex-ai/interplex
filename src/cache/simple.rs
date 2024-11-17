@@ -18,6 +18,8 @@ pub fn new_simple_cache() -> SimpleCache {
 
 #[async_trait]
 impl Cacheable for SimpleCache {
+    
+    
     async fn get(&self, key: &str) -> Result<CachedObject, Box<dyn Error>> {
         let store = self.store.read().await;
         if let Some(value) = store.get(key) {
@@ -35,6 +37,13 @@ impl Cacheable for SimpleCache {
         store.insert(tokenized_key, CachedObject{ 
             value,
         });
+        Ok(())
+    }
+
+    async fn remove(&self, key: &str) -> Result<(), Box<dyn Error>> {
+        
+        let mut store = self.store.write().await;
+        store.remove(key);
         Ok(())
     }
 }

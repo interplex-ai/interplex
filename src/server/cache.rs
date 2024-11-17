@@ -1,9 +1,7 @@
 use crate::cache::simple::{new_simple_cache, SimpleCache};
 use crate::cache::disk::{new_disk_cache};
 use crate::cache::Cacheable;
-use interplex_ai_schemas_community_neoeinstein_prost::schema::v1::{
-    GetRequest, GetResponse, SetRequest, SetResponse,
-};
+use interplex_ai_schemas_community_neoeinstein_prost::schema::v1::{DeleteRequest, DeleteResponse, GetRequest, GetResponse, SetRequest, SetResponse};
 use interplex_ai_schemas_community_neoeinstein_tonic::schema::v1::tonic::cache_service_server::CacheService;
 use tonic::{async_trait, Request, Response, Status};
 
@@ -57,6 +55,13 @@ impl CacheService for MyCacheService {
 
         let value= v.value;
         let reply = GetResponse { value };
+        Ok(Response::new(reply))
+    }
+
+    async fn delete(&self, request: Request<DeleteRequest>) -> Result<Response<DeleteResponse>, Status> {
+        let key = request.into_inner().key;
+        self.cache.remove(&key).await  .map_err(|e| Status::internal(format!("Cache remove error: {}", e)))?;
+        let reply = DeleteResponse {};
         Ok(Response::new(reply))
     }
 }

@@ -87,6 +87,16 @@ impl Cacheable for DiskCache {
         info!("Cached value for key: {} at {}", key, file_path.as_path().to_str().unwrap());
         Ok(())
     }
+
+    async fn remove(&self, key: &str) -> std::result::Result<(), Box<dyn Error>> {
+
+        let file_path = self.get_file_path(key);
+        let contents = read_to_string(&file_path)?;
+        info!("Cache hit for key: {}", key);
+        self.store.write().await.remove(key);
+        info!("Cache miss for key: {}", key);
+        Ok(())
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -167,5 +177,25 @@ mod tests {
         let set_result = cache.set("", "value1".to_string()).await;
         assert!(set_result.is_err());
 
+    }
+    #[tokio::test]
+    async fn test_delete_key_disk() {
+        let cache_dir = get_cache_dir();
+        let cache = new_disk_cache(cache_dir.to_str().unwrap());
+
+        // Set a value
+        let set_result = cache.set("key1", "value1".to_string()).await;
+        assert!(set_result.is_ok());
+
+        // Get the value
+        let get_result = cache.get("key1").await;
+        assert!(get_result.is_ok());
+        assert_eq!(get_result.unwrap().value, "value1".to_string());
+
+        // Delete the value
+        let _ = cache.remove("key1").await;
+        // Check that the cache is empty
+        let store = cache.store.read().await;
+        assert_eq!(store.len(), 0);
     }
 }
