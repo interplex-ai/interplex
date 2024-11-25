@@ -26,7 +26,7 @@ impl ServerFactory {
 pub struct ServerConfiguration {
     pub(crate) port: i64,
     pub(crate) memory_only_cache: bool,
-    pub(crate) cache_path: String
+    pub(crate) cache_path: String,
 }
 pub struct Server {
     server_config: ServerConfiguration,
@@ -37,10 +37,15 @@ impl Server {
         let port = self.server_config.port.to_string();
         let addr = format!("0.0.0.0:{}", port).parse().unwrap();
         info!("Server listening on port {}", port);
-        let my_cache_service = MyCacheService::new(self.server_config.memory_only_cache, self.server_config.cache_path.as_str());
+        let my_cache_service = MyCacheService::new(
+            self.server_config.memory_only_cache,
+            self.server_config.cache_path.as_str(),
+        );
 
         let reflection_service = Builder::configure()
-            .register_encoded_file_descriptor_set(interplex_ai_schemas_community_neoeinstein_prost::schema::v1::FILE_DESCRIPTOR_SET)
+            .register_encoded_file_descriptor_set(
+                interplex_ai_schemas_community_neoeinstein_prost::schema::v1::FILE_DESCRIPTOR_SET,
+            )
             .build()
             .unwrap();
 
@@ -56,17 +61,16 @@ impl Server {
 
 #[cfg(test)]
 mod tests {
-    use std::env;
-    use std::path::PathBuf;
     use super::*;
     use interplex_ai_schemas_community_neoeinstein_prost::schema::v1::{GetRequest, SetRequest};
     use interplex_ai_schemas_community_neoeinstein_tonic::schema::v1::tonic::cache_service_client::CacheServiceClient;
-    use tempfile::NamedTempFile;
+    use std::env;
+    use std::path::PathBuf;
+
     use tokio::runtime::Runtime;
     use tokio::time::Instant;
     use tonic::Request;
-    use tempfile::Builder;
-    
+
     fn get_temp_dir_path() -> PathBuf {
         env::temp_dir()
     }
@@ -78,7 +82,11 @@ mod tests {
 
         let tmpfile = format!("{}/{}", get_temp_dir_path().to_str().unwrap(), "cached");
         // Create server configuration
-        let server_config = ServerConfiguration { port: 50051, memory_only_cache: false, cache_path: tmpfile.to_string() };
+        let server_config = ServerConfiguration {
+            port: 50051,
+            memory_only_cache: false,
+            cache_path: tmpfile.to_string(),
+        };
 
         // Build and start the server
         let server = ServerFactory::default()
@@ -125,10 +133,9 @@ mod tests {
         });
 
         assert_eq!(response.into_inner().value, "2");
-        
+
         // delete the caching file
         std::fs::remove_dir_all(tmpfile).expect("Failed to delete cache file");
-        
     }
     #[test]
     fn test_server_performance() {
@@ -138,7 +145,7 @@ mod tests {
         let server_config = ServerConfiguration {
             port: 50052,
             memory_only_cache: false,
-            cache_path: tmpfile.clone()
+            cache_path: tmpfile.clone(),
         };
 
         let server = ServerFactory::default()
@@ -168,22 +175,14 @@ mod tests {
                 value: (i * 2).to_string(),
             });
             rt.block_on(async {
-                client
-                    .set(request)
-                    .await
-                    .expect("Failed to set value");
+                client.set(request).await.expect("Failed to set value");
             });
         }
 
         for i in 0..1000 {
-            let request = Request::new(GetRequest {
-                key: i.to_string(),
-            });
+            let request = Request::new(GetRequest { key: i.to_string() });
             rt.block_on(async {
-                client
-                    .get(request)
-                    .await
-                    .expect("Failed to get value");
+                client.get(request).await.expect("Failed to get value");
             });
         }
 
