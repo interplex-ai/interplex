@@ -1,5 +1,4 @@
 use crate::cache::{Cacheable, CachedObject};
-use std::any::Any;
 use std::collections::HashMap;
 use std::error::Error;
 use std::sync::Arc;
@@ -18,8 +17,6 @@ pub fn new_simple_cache() -> SimpleCache {
 
 #[async_trait]
 impl Cacheable for SimpleCache {
-    
-    
     async fn get(&self, key: &str) -> Result<CachedObject, Box<dyn Error>> {
         let store = self.store.read().await;
         if let Some(value) = store.get(key) {
@@ -34,14 +31,11 @@ impl Cacheable for SimpleCache {
         let tokens: Vec<&str> = key.split_whitespace().collect();
         let tokenized_key = tokens.join("_"); // Join tokens with an underscore
 
-        store.insert(tokenized_key, CachedObject{ 
-            value,
-        });
+        store.insert(tokenized_key, CachedObject { value });
         Ok(())
     }
 
     async fn remove(&self, key: &str) -> Result<(), Box<dyn Error>> {
-        
         let mut store = self.store.write().await;
         store.remove(key);
         Ok(())
@@ -95,29 +89,30 @@ mod tests {
     #[tokio::test]
     async fn test_tokenized_key() {
         let cache = new_simple_cache();
-    
+
         // Set a value with a tokenizable key
-        let set_result = cache.set("token key with spaces", "value1".to_string()).await;
+        let set_result = cache
+            .set("token key with spaces", "value1".to_string())
+            .await;
         assert!(set_result.is_ok());
-    
+
         // Get the value using the tokenized key
         let get_result = cache.get("token_key_with_spaces").await;
         assert!(get_result.is_ok());
         assert_eq!(get_result.unwrap().value, "value1".to_string());
     }
-    
+
     #[tokio::test]
     async fn test_empty_key() {
         let cache = new_simple_cache();
-    
+
         // Set a value with an empty key
         let set_result = cache.set("", "value1".to_string()).await;
         assert!(set_result.is_ok());
-    
+
         // Get the value using the empty key
         let get_result = cache.get("").await;
         assert!(get_result.is_ok());
         assert_eq!(get_result.unwrap().value, "value1".to_string());
     }
 }
-

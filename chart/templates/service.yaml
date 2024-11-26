@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "interplex.fullname" . }}-service
+  labels:
+    {{- include "interplex.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: http
+  selector:
+    {{- include "interplex.selectorLabels" . | nindent 4 }}
+  clusterIP: {{ .Values.service.clusterIP | default "None" }}
+  {{- if .Values.service.annotations }}
+  annotations:
+    {{- toYaml .Values.service.annotations | nindent 4 }}
+  {{- end }}
+  type: {{ .Values.service.type | default "ClusterIP" }}

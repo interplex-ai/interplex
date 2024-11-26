@@ -1,15 +1,14 @@
 use crate::cache::{Cacheable, CachedObject};
 use anyhow::Result;
+use log::{error, info};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::error::Error;
 use std::fs::{read_to_string, write};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::sync::Arc;
-use log::{error, info};
 use tokio::sync::RwLock;
 use tonic::async_trait;
-
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct DiskCachedObject {
@@ -70,26 +69,32 @@ impl Cacheable for DiskCache {
 
     async fn set(&self, key: &str, value: String) -> Result<(), Box<dyn Error>> {
         if key.is_empty() {
-            return Err("Key not found".into())
+            return Err("Key not found".into());
         }
         let cached_object = DiskCachedObject {
             value: value.clone(),
         };
 
         // Update in-memory cache
-        self.store.write().await.insert(key.to_string(), cached_object.clone());
+        self.store
+            .write()
+            .await
+            .insert(key.to_string(), cached_object.clone());
 
         // Update disk cache
         let file_path = self.get_file_path(key);
         let contents = serde_json::to_string(&cached_object)?;
         write(&file_path, contents)?;
 
-        info!("Cached value for key: {} at {}", key, file_path.as_path().to_str().unwrap());
+        info!(
+            "Cached value for key: {} at {}",
+            key,
+            file_path.as_path().to_str().unwrap()
+        );
         Ok(())
     }
 
     async fn remove(&self, key: &str) -> std::result::Result<(), Box<dyn Error>> {
-
         let file_path = self.get_file_path(key);
         let contents = read_to_string(&file_path)?;
         info!("Cache hit for key: {}", key);
@@ -102,7 +107,7 @@ impl Cacheable for DiskCache {
 mod tests {
     use super::*;
     use tempfile::NamedTempFile;
-    use tokio::fs;
+
     use std::path::PathBuf;
 
     fn get_cache_dir() -> PathBuf {
@@ -159,7 +164,9 @@ mod tests {
         let cache = new_disk_cache(cache_dir.to_str().unwrap());
 
         // Set a value with a tokenizable key
-        let set_result = cache.set("token key with spaces", "value1".to_string()).await;
+        let set_result = cache
+            .set("token key with spaces", "value1".to_string())
+            .await;
         assert!(set_result.is_ok());
 
         // Get the value using the tokenized key
@@ -176,7 +183,6 @@ mod tests {
         // Set a value with an empty key
         let set_result = cache.set("", "value1".to_string()).await;
         assert!(set_result.is_err());
-
     }
     #[tokio::test]
     async fn test_delete_key_disk() {
