@@ -11,10 +11,13 @@ mod server;
 struct Args {
     #[arg(short, long, default_value_t = false)]
     memory_only_cache: bool,
+    #[arg(short, long, default_value_t = 8080)]
+    port: i64,
 }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    info!("Starting interplex...")
     let arg = Args::parse();
 
     let home_dir = env::home_dir().expect("Home directory not found");
@@ -23,7 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     env_logger::init();
     let server_config = ServerConfiguration {
-        port: 8080,
+        port: arg.port,
         memory_only_cache: arg.memory_only_cache,
         cache_path: default_cache_path,
     };
