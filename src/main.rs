@@ -17,7 +17,6 @@ struct Args {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    info!("Starting interplex...")
     let arg = Args::parse();
 
     let home_dir = env::home_dir().expect("Home directory not found");
@@ -31,7 +30,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         cache_path: default_cache_path,
     };
 
-    info!("Starting interplex");
+    info!("Starting interplex on {}", arg.port);
     let server_factory = ServerFactory::default()
         .with_configuration(server_config)
         .build();
