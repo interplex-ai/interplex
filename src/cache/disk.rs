@@ -1,6 +1,6 @@
 use crate::cache::{Cacheable, CachedObject};
 use anyhow::Result;
-use log::{error, info};
+use log::{error, info, warn};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::error::Error;
@@ -63,7 +63,7 @@ impl Cacheable for DiskCache {
             });
         }
 
-        error!("Cache miss for key: {}", key);
+        warn!("Cache miss for key: {}", key);
         Err("Value not found".into())
     }
 
@@ -97,9 +97,8 @@ impl Cacheable for DiskCache {
     async fn remove(&self, key: &str) -> std::result::Result<(), Box<dyn Error>> {
         let file_path = self.get_file_path(key);
         let contents = read_to_string(&file_path)?;
-        info!("Cache hit for key: {}", key);
         self.store.write().await.remove(key);
-        info!("Cache miss for key: {}", key);
+        info!("Deleted key: {}", key);
         Ok(())
     }
 }
