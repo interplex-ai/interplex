@@ -6,9 +6,9 @@ metadata:
     {{- include "interplex.labels" . | nindent 4 }}
 spec:
   ports:
-    - name: http
+    - name: endpoint
       port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.service.port }}
   selector:
     {{- include "interplex.selectorLabels" . | nindent 4 }}
   clusterIP: {{ .Values.service.clusterIP | default "None" }}

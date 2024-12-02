@@ -1,6 +1,9 @@
 # Default values for interplex.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+service:
+  type: ClusterIP
+  port: 8084
 
 replicaCount: 1
 port: 8084
@@ -38,11 +41,6 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
-
 ingress:
   enabled: false
   className: ""
