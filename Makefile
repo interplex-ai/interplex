@@ -33,7 +33,7 @@ clean:
 
 # Deploy using Helm
 deploy:
-	cd chart && helm install interplex .
+	cd chart/interplex && helm install interplex .
 
 # Remove Helm deployment
 undeploy:
