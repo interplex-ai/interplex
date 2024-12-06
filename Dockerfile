@@ -7,7 +7,7 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates
 
 # Copy the pre-built binary from your local filesystem to the container
-COPY ./target/x86_64-unknown-linux-musl/release/interplex /app/interplex
+COPY ./target/release/interplex /app/interplex
 
 # Set the entrypoint to the compiled binary
 CMD ["/app/interplex"]
