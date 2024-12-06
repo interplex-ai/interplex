@@ -37,7 +37,6 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           default-branch: main
   build-container:
-    if: needs.release-please.outputs.releases_created == 'true'
     needs:
       - release-please
     runs-on: ubuntu-24.04
@@ -53,7 +52,11 @@ jobs:
         uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
         with:
           submodules: recursive
-
+      - name: Log in to Buf registry
+        env:
+          BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
+        run: |
+          cargo login --registry buf "Bearer $BUF_TOKEN"
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
@@ -64,6 +67,19 @@ jobs:
           registry: "ghcr.io"
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Docker Image
+        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          target: production
+          tags: |
+            ${{ env.IMAGE_TAG }}
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          cache-from: type=gha,scope=${{ github.ref_name }}-${{ env.IMAGE_TAG }}
+          cache-to: type=gha,scope=${{ github.ref_name }}-${{ env.IMAGE_TAG }}
 
   release-charts:
     needs: release-please
