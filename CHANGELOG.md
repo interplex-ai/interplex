@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.5](https://github.com/interplex-ai/interplex/compare/v0.0.4...v0.0.5) (2024-12-06)
+
+
+### Features
+
+* adding container release ([5c6b2e4](https://github.com/interplex-ai/interplex/commit/5c6b2e408471a8b8160f96be8ef819d1540e071a))
+* adding container release ([8835bf1](https://github.com/interplex-ai/interplex/commit/8835bf1f30111f698e4ebcc9d3e696ca092fc3b0))
+* fixed chart ([cbbcbd5](https://github.com/interplex-ai/interplex/commit/cbbcbd5e55c6c34dc5040df11e48c434bf0a2b8d))
+* testing ([f827e91](https://github.com/interplex-ai/interplex/commit/f827e916611eb6b55f576aa7a389dddd228b01c7))
+* testing ([ca46ee3](https://github.com/interplex-ai/interplex/commit/ca46ee3f3e88c1f19cc4a9dd192321dbe4ebb5fb))
+* testing ([2e31272](https://github.com/interplex-ai/interplex/commit/2e31272ef315ac6d15d4a8f83f81a970de0d9517))
+* testing ([000c325](https://github.com/interplex-ai/interplex/commit/000c325528b0386dfffba9fbb9c26c555bd0ee28))
+* testing ([75f8e71](https://github.com/interplex-ai/interplex/commit/75f8e719ef9fc808c01e0bd239d91d50081742d9))
+
 ## [0.0.4](https://github.com/interplex-ai/interplex/compare/v0.0.3...v0.0.4) (2024-12-06)
 
 
