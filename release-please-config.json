@@ -9,7 +9,8 @@
       "draft": false,
       "extra-files": [
         "README.md",
-        "Makefile"
+        "Makefile",
+        "chart/interplex/Chart.yaml"
       ],
       "changelog-sections": [
         {

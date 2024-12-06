@@ -47,7 +47,7 @@ jobs:
       - name: Publish Helm chart
         uses: stefanprodan/helm-gh-pages@master
         with:
-          token: ${{ secrets.K8SGPT_BOT_SECRET }}
+          token: ${{ secrets.K8SGPT_BOT_TOKEN }}
           charts_dir: chart
           charts_url: https://charts.k8sgpt.ai
           owner: k8sgpt-ai
