@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.6](https://github.com/interplex-ai/interplex/compare/v0.0.5...v0.0.6) (2024-12-06)
+
+
+### Features
+
+* adding container release ([2f2f79d](https://github.com/interplex-ai/interplex/commit/2f2f79db47d050e73d93516b69e795b4cc463bf8))
+* adding container release ([e833785](https://github.com/interplex-ai/interplex/commit/e8337852dcde75fe5e510fe3d6ade3bbfb93f38e))
+* updated docker build release ([919c01a](https://github.com/interplex-ai/interplex/commit/919c01ae11d1e2d46f8735340359d8d39e2214b1))
+
 ## [0.0.5](https://github.com/interplex-ai/interplex/compare/v0.0.4...v0.0.5) (2024-12-06)
 
 
