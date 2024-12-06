@@ -62,7 +62,7 @@ impl Server {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use interplex_ai_schemas_community_neoeinstein_prost::schema::v1::{GetRequest, SetRequest};
+    use interplex_ai_schemas_community_neoeinstein_prost::schema::v1::{DeleteRequest, GetRequest, SetRequest};
     use interplex_ai_schemas_community_neoeinstein_tonic::schema::v1::tonic::cache_service_client::CacheServiceClient;
     use std::env;
     use std::path::PathBuf;
@@ -133,6 +133,16 @@ mod tests {
         });
 
         assert_eq!(response.into_inner().value, "2");
+
+        // Let's delete from the cache
+
+        let delete_request = DeleteRequest {
+            key: "1".to_string(),
+        };
+
+        let response = rt.block_on(async {
+            client.delete(delete_request).await.expect("Failed to delete get_request")
+        });
 
         // delete the caching file
         std::fs::remove_dir_all(tmpfile).expect("Failed to delete cache file");

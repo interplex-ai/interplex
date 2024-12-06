@@ -11,7 +11,7 @@ mod server;
 struct Args {
     #[arg(short, long, default_value_t = false)]
     memory_only_cache: bool,
-    #[arg(short, long, default_value_t = 8080)]
+    #[arg(short, long, default_value_t = 8084)]
     port: i64,
 }
 

@@ -36,3 +36,22 @@ jobs:
           command: manifest
           token: ${{secrets.GITHUB_TOKEN}}
           default-branch: main
+  release-charts:
+    needs: release-please
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    if: needs.release-please.outputs.releases_created == 'true'
+    steps:
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.K8SGPT_BOT_SECRET }}
+          charts_dir: chart
+          charts_url: https://charts.k8sgpt.ai
+          owner: k8sgpt-ai
+          repository: charts
+          branch: main
+          commit_username: k8sgpt-ai-bot
+          commit_email: bot@noreply.k8sgpt.ai
