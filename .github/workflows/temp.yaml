@@ -27,7 +27,7 @@ jobs:
           charts_dir: chart
           charts_url: https://charts.k8sgpt.ai
           owner: k8sgpt-ai
-          repository: charts
+          repository: k8sgpt-ai/charts
           branch: main
           commit_username: k8sgpt-ai-bot
           commit_email: bot@noreply.k8sgpt.ai
