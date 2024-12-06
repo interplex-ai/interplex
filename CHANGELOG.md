@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/interplex-ai/interplex/compare/v0.0.3...v0.0.4) (2024-12-06)
+
+
+### Features
+
+* moved chart ([6f87a90](https://github.com/interplex-ai/interplex/commit/6f87a90a6301def6870aeef074fe9e6955eabee3))
+
 ## [0.0.3](https://github.com/interplex-ai/interplex/compare/v0.0.2...v0.0.3) (2024-12-06)
 
 
