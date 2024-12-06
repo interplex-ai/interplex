@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.3](https://github.com/interplex-ai/interplex/compare/v0.0.2...v0.0.3) (2024-12-06)
+
+
+### Features
+
+* adding chart publishing ([a4d82e4](https://github.com/interplex-ai/interplex/commit/a4d82e447aea4f2cda5deba5209849eaa5eea303))
+
+
+### Other
+
+* reduced error to warn for cache miss ([5895a69](https://github.com/interplex-ai/interplex/commit/5895a693b71c5607aee0639f634d783aeef8dff3))
+* updated default chart ([7552380](https://github.com/interplex-ai/interplex/commit/755238001156eb95b5b84d417e4e4c15424bdb4e))
+
 ## [0.0.2](https://github.com/interplex-ai/interplex/compare/v0.0.1...v0.0.2) (2024-11-26)
 
 
