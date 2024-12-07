@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/interplex-ai/interplex/compare/v0.0.7...v0.0.8) (2024-12-06)
+
+
+### Features
+
+* updated docker build release ([75960ca](https://github.com/interplex-ai/interplex/commit/75960ca572c51dcd567b6533165f298677c10c08))
+
 ## [0.0.7](https://github.com/interplex-ai/interplex/compare/v0.0.6...v0.0.7) (2024-12-06)
 
 
