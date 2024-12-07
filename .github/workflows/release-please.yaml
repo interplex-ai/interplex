@@ -78,6 +78,7 @@ jobs:
             ${{ env.IMAGE_TAG }}
           builder: ${{ steps.buildx.outputs.name }}
           push: true
+          build-args: BUF_TOKEN=${{ secrets.BUF_TOKEN }}
           cache-from: type=gha,scope=${{ github.ref_name }}-${{ env.IMAGE_TAG }}
           cache-to: type=gha,scope=${{ github.ref_name }}-${{ env.IMAGE_TAG }}
 
