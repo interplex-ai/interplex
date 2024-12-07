@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.9](https://github.com/interplex-ai/interplex/compare/v0.0.8...v0.0.9) (2024-12-07)
+
+
+### Features
+
+* improved docker image ([bdf082d](https://github.com/interplex-ai/interplex/commit/bdf082de900b3791df8f970a83301b5b4dc69879))
+
 ## [0.0.8](https://github.com/interplex-ai/interplex/compare/v0.0.7...v0.0.8) (2024-12-06)
 
 
