@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10](https://github.com/interplex-ai/interplex/compare/v0.0.9...v0.0.10) (2024-12-09)
+
+
+### Features
+
+* trying bot token ([af6dda2](https://github.com/interplex-ai/interplex/commit/af6dda28dd9e2df5958a71654ce84206833b45ae))
+
 ## [0.0.9](https://github.com/interplex-ai/interplex/compare/v0.0.8...v0.0.9) (2024-12-07)
 
 
