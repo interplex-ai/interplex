@@ -6,7 +6,7 @@ SYSTEMD_DIR = /etc/systemd/system
 SERVICE_TEMPLATE = service/interplex.service
 SERVICE_FILE = interplex.template
 PACKAGE_NAME = interplex
-VERSION = 0.0.11 # x-release-please-version
+VERSION = 1.0.0 # x-release-please-version
 
 # Ensure verbose output
 MAKEFLAGS += --debug=v
