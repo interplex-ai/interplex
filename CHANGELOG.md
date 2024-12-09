@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/interplex-ai/interplex/compare/v0.0.10...v0.0.11) (2024-12-09)
+
+
+### Features
+
+* chart auto update values on release ([7ffa354](https://github.com/interplex-ai/interplex/commit/7ffa35425472fde804339f55dd430685885649d5))
+
 ## [0.0.10](https://github.com/interplex-ai/interplex/compare/v0.0.9...v0.0.10) (2024-12-09)
 
 
