@@ -29,58 +29,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-
       - uses: google-github-actions/release-please-action@e4dc86ba9405554aeba3c6bb2d169500e7d3b4ee # v4
         id: release
         with:
           command: manifest
           token: ${{secrets.GITHUB_TOKEN}}
           default-branch: main
-  build-container:
-    needs:
-      - release-please
-    runs-on: ubuntu-24.04
-    if: needs.release-please.outputs.releases_created == 'true'
-    permissions:
-      contents: write
-      packages: write
-      id-token: write
-    env:
-      IMAGE_TAG: ghcr.io/interplex-ai/interplex:${{ needs.release-please.outputs.tag_name }}
-      IMAGE_NAME: interplex
-    steps:
-      - name: Checkout
-        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
-        with:
-          submodules: recursive
-      - name: Log in to Buf registry
-        env:
-          BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
-        run: |
-          cargo login --registry buf "Bearer $BUF_TOKEN"
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
-        with:
-          registry: "ghcr.io"
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Docker Image
-        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            ${{ env.IMAGE_TAG }}
-          builder: ${{ steps.buildx.outputs.name }}
-          push: true
-          build-args: BUF_TOKEN=${{ secrets.BUF_TOKEN }}
-          cache-from: type=gha,scope=${{ github.ref_name }}-${{ env.IMAGE_TAG }}
-          cache-to: type=gha,scope=${{ github.ref_name }}-${{ env.IMAGE_TAG }}
 
   release-charts:
     needs: release-please
@@ -101,3 +55,42 @@ jobs:
           branch: main
           commit_username: k8sgpt-ai-bot
           commit_email: bot@noreply.k8sgpt.ai
+  build-container:
+    needs:
+      - release-please
+    runs-on: ubuntu-24.04
+    if: needs.release-please.outputs.releases_created == 'true'
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+    env:
+      IMAGE_TAG: ghcr.io/interplex-ai/interplex:${{ needs.release-please.outputs.tag_name }}
+      IMAGE_NAME: interplex
+    steps:
+      - name: Checkout
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+        with:
+          submodules: recursive
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+        with:
+          registry: "ghcr.io"
+          username: ${{ github.actor }}
+          password: ${{ secrets.K8SGPT_BOT_TOKEN }}
+      - name: Build Docker Image
+        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ env.IMAGE_TAG }}
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          build-args: BUF_TOKEN=${{ secrets.BUF_TOKEN }}
+          cache-from: type=gha,scope=${{ github.ref_name }}-${{ env.IMAGE_TAG }}
+          cache-to: type=gha,scope=${{ github.ref_name }}-${{ env.IMAGE_TAG }}
