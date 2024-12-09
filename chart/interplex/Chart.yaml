@@ -2,5 +2,5 @@ apiVersion: v2
 name: interplex
 description: A very fast cache written in Rust
 type: application
-version: 0.0.11
-appVersion: v0.0.10
+version: 0.0.11 # x-release-please-version
+appVersion: v0.0.11 # x-release-please-version
