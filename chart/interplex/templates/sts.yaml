@@ -48,9 +48,10 @@ spec:
               value: "DEBUG"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
+          {{- if .Values.persistence.enabled }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
           {{- end }}
       {{- with .Values.volumes }}
       volumes:
@@ -68,3 +69,15 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - {{ .Values.persistence.accessMode }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        storageClassName: {{ .Values.persistence.storageClass }}
+  {{- end }}

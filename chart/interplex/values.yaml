@@ -5,6 +5,14 @@ service:
   type: ClusterIP
   port: 8084
 
+persistence:
+  enabled: false
+  mountPath: "/root/.cached"
+  accessMode: "ReadWriteOnce"
+  size: "1Gi"
+  storageClass: "standard"
+
+
 replicaCount: 1
 port: 8084
 image:
@@ -84,14 +92,6 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
-
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
-
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts: []
 # - name: foo
