@@ -40,6 +40,18 @@ impl Cacheable for SimpleCache {
         store.remove(key);
         Ok(())
     }
+
+    async fn list_keys(&self) -> Result<Vec<String>, Box<dyn Error>> {
+        let store = self.store.read().await;
+        let keys: Vec<String> = store.keys().cloned().collect();
+        Ok(keys)
+    }
+
+    async fn purge(&self) -> Result<(), Box<dyn Error>> {
+        let mut store = self.store.write().await;
+        store.clear();
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -115,4 +127,24 @@ mod tests {
         assert!(get_result.is_ok());
         assert_eq!(get_result.unwrap().value, "value1".to_string());
     }
+
+    #[tokio::test]
+    async fn test_list_keys_disk() {
+
+        let cache = new_simple_cache();
+        // Set a value
+        let set_result = cache.set("key1", "value1".to_string()).await;
+        assert!(set_result.is_ok());
+
+        // Set another value
+        let set_result = cache.set("key2", "value2".to_string()).await;
+        assert!(set_result.is_ok());
+
+        // List keys
+        let keys = cache.list_keys().await.unwrap();
+        assert_eq!(keys.len(), 2);
+        assert!(keys.contains(&"key1".to_string()));
+        assert!(keys.contains(&"key2".to_string()));
+    }
+
 }

@@ -101,6 +101,21 @@ impl Cacheable for DiskCache {
         info!("Deleted key: {}", key);
         Ok(())
     }
+
+    async fn list_keys(&self) -> Result<Vec<String>, Box<dyn Error>> {
+        let store = self.store.read().await;
+        let keys: Vec<String> = store.keys().cloned().collect();
+        Ok(keys)
+    }
+
+    async fn purge(&self) -> Result<(), Box<dyn Error>> {
+        let mut store = self.store.write().await;
+        store.clear();
+        // pugre the cache directory
+        let _ = std::fs::remove_dir_all(&self.cache_dir);
+        info!("Purged cache");
+        Ok(())
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -200,6 +215,45 @@ mod tests {
         // Delete the value
         let _ = cache.remove("key1").await;
         // Check that the cache is empty
+        let store = cache.store.read().await;
+        assert_eq!(store.len(), 0);
+    }
+
+    #[tokio::test]
+    async fn test_list_keys_disk() {
+        let cache_dir = get_cache_dir();
+        let cache = new_disk_cache(cache_dir.to_str().unwrap());
+
+        // Set a value
+        let set_result = cache.set("key1", "value1".to_string()).await;
+        assert!(set_result.is_ok());
+
+        // Set another value
+        let set_result = cache.set("key2", "value2".to_string()).await;
+        assert!(set_result.is_ok());
+
+        // List keys
+        let keys = cache.list_keys().await.unwrap();
+        assert_eq!(keys.len(), 2);
+        assert!(keys.contains(&"key1".to_string()));
+        assert!(keys.contains(&"key2".to_string()));
+    }
+
+    #[tokio::test]
+    async fn test_purge_disk() {
+        let cache_dir = get_cache_dir();
+        let cache = new_disk_cache(cache_dir.to_str().unwrap());
+
+        // Set a value
+        let set_result = cache.set("key1", "value1".to_string()).await;
+        assert!(set_result.is_ok());
+
+        // Set another value
+        let set_result = cache.set("key2", "value2".to_string()).await;
+        assert!(set_result.is_ok());
+
+        // Purge the cache
+        let _ = cache.purge().await;
         let store = cache.store.read().await;
         assert_eq!(store.len(), 0);
     }
