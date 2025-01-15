@@ -33,7 +33,7 @@ pub struct Server {
 }
 
 impl Server {
-    pub async fn start(&self) -> Result<(), Box<dyn Error>> {
+    pub async fn start(self) -> Result<(), Box<dyn Error>> {
         let port = self.server_config.port.to_string();
         let addr = format!("0.0.0.0:{}", port).parse().unwrap();
         info!("Server listening on port {}", port);

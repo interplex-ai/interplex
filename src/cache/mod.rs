@@ -9,6 +9,8 @@ pub trait Cacheable {
     async fn get(&self, key: &str) -> Result<CachedObject, Box<dyn Error>>;
     async fn set(&self, key: &str, value: String) -> Result<(), Box<dyn Error>>;
     async fn remove(&self, key: &str) -> Result<(), Box<dyn Error>>;
+    async fn list_keys(&self) -> Result<Vec<String>, Box<dyn Error>>;
+    async fn purge(&self) -> Result<(), Box<dyn Error>>;
 }
 
 #[derive(Clone)]
