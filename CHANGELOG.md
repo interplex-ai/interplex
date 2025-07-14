@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/interplex-ai/interplex/compare/v1.0.0...v1.1.0) (2025-07-14)
+
+
+### Features
+
+* adding list/purge cache methods ([2b7d321](https://github.com/interplex-ai/interplex/commit/2b7d32176b7710268195a9534b062087d14668f9))
+
+
+### Other
+
+* updated dependencies ([62aa7f6](https://github.com/interplex-ai/interplex/commit/62aa7f6b06e5669e8268719a817de94346e096c5))
+
 ## 1.0.0 (2024-12-09)
 
 
