@@ -39,7 +39,7 @@ impl CacheService for MyCacheService {
         self.cache
             .set(&key, value)
             .await
-            .map_err(|e| Status::internal(format!("Cache set error: {}", e)))?;
+            .map_err(|e| Status::internal(format!("Cache set error: {e}")))?;
 
         let reply = SetResponse {};
         Ok(Response::new(reply))
@@ -52,7 +52,7 @@ impl CacheService for MyCacheService {
             .cache
             .get(&key)
             .await
-            .map_err(|e| Status::internal(format!("Cache get error: {}", e)))?;
+            .map_err(|e| Status::internal(format!("Cache get error: {e}")))?;
 
         let value = v.value;
         let reply = GetResponse { value };
@@ -67,7 +67,7 @@ impl CacheService for MyCacheService {
         self.cache
             .remove(&key)
             .await
-            .map_err(|e| Status::internal(format!("Cache remove error: {}", e)))?;
+            .map_err(|e| Status::internal(format!("Cache remove error: {e}")))?;
         let reply = DeleteResponse {};
         Ok(Response::new(reply))
     }

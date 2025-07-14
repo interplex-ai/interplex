@@ -35,8 +35,8 @@ pub struct Server {
 impl Server {
     pub async fn start(self) -> Result<(), Box<dyn Error>> {
         let port = self.server_config.port.to_string();
-        let addr = format!("0.0.0.0:{}", port).parse().unwrap();
-        info!("Server listening on port {}", port);
+        let addr = format!("0.0.0.0:{port}").parse().unwrap();
+        info!("Server listening on port {port}");
         let my_cache_service = MyCacheService::new(
             self.server_config.memory_only_cache,
             self.server_config.cache_path.as_str(),
@@ -197,7 +197,7 @@ mod tests {
         }
 
         let duration = start.elapsed();
-        println!("Total time taken: {:?}", duration);
+        println!("Total time taken: {duration:?}");
 
         std::fs::remove_dir_all(tmpfile).expect("Failed to delete cache file");
     }

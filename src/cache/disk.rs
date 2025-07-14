@@ -1,6 +1,6 @@
 use crate::cache::{Cacheable, CachedObject};
 use anyhow::Result;
-use log::{error, info, warn};
+use log::{info, warn};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::error::Error;
@@ -41,7 +41,7 @@ impl Cacheable for DiskCache {
         {
             let store = self.store.read().await;
             if let Some(value) = store.get(key) {
-                info!("Cache hit for key: {}", key);
+                info!("Cache hit for key: {key}");
                 return Ok(CachedObject {
                     value: value.clone().value,
                 });
@@ -51,7 +51,7 @@ impl Cacheable for DiskCache {
         // Check disk cache
         let file_path = self.get_file_path(key);
         if file_path.exists() {
-            info!("Cache hit on disk for key: {}", key);
+            info!("Cache hit on disk for key: {key}");
             let contents = read_to_string(&file_path)?;
             let cached_object: DiskCachedObject = serde_json::from_str(&contents)?;
             self.store
